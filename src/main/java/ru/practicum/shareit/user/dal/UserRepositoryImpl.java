@@ -3,10 +3,7 @@ package ru.practicum.shareit.user.dal;
 import org.springframework.stereotype.Repository;
 import ru.practicum.shareit.user.model.User;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @Repository
@@ -47,7 +44,14 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User getUserById(Long userId) {
-        return users.get(userId);
+    public Optional<User> getUserById(Long userId) {
+        return Optional.ofNullable(users.get(userId));
+    }
+
+    @Override
+    public boolean existEmail(String email) {
+        List<User> users = getAllUsers();
+        return users.stream()
+                .anyMatch(user -> user.getEmail().equals(email));
     }
 }

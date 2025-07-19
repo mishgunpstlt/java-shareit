@@ -3,10 +3,7 @@ package ru.practicum.shareit.item.dal;
 import org.springframework.stereotype.Repository;
 import ru.practicum.shareit.item.model.Item;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Repository
 public class ItemRepositoryImpl implements ItemRepository {
@@ -26,10 +23,10 @@ public class ItemRepositoryImpl implements ItemRepository {
     @Override
     public Item updateItem(Item item, Long itemId) {
         Item updatingItem = items.get(itemId);
-        if (item.getName() != null) {
+        if (item.getName() != null && !item.getName().isBlank()) {
             updatingItem.setName(item.getName());
         }
-        if (item.getDescription() != null) {
+        if (item.getDescription() != null && !item.getDescription().isBlank()) {
             updatingItem.setDescription(item.getDescription());
         }
         if (item.getAvailable() != null) {
@@ -40,8 +37,8 @@ public class ItemRepositoryImpl implements ItemRepository {
     }
 
     @Override
-    public Item getItemById(Long itemId) {
-        return items.get(itemId);
+    public Optional<Item> getItemById(Long itemId) {
+        return Optional.ofNullable(items.get(itemId));
     }
 
     @Override
@@ -53,9 +50,10 @@ public class ItemRepositoryImpl implements ItemRepository {
 
     @Override
     public List<Item> searchItemsByText(String text) {
+        String finalText = text.toLowerCase();
         return items.values().stream()
-                .filter(item -> item.getAvailable() && (item.getDescription().toLowerCase().contains(text.toLowerCase())
-                        || item.getName().toLowerCase().contains(text.toLowerCase())))
+                .filter(item -> item.getAvailable() && (item.getDescription().toLowerCase().contains(finalText)
+                        || item.getName().toLowerCase().contains(finalText)))
                 .toList();
     }
 }

@@ -19,4 +19,10 @@ public class GlobalExceptionHandler {
     public ErrorResponse handleNotFoundException(NotFoundException e) {
         return new ErrorResponse(e.getMessage());
     }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleNoOwnerException(IsntOwnerException e) {
+        return new ErrorResponse(e.getMessage());
+    }
 }

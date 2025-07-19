@@ -3,6 +3,7 @@ package ru.practicum.shareit.user.dal;
 import ru.practicum.shareit.user.model.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserRepository {
     List<User> getAllUsers();
@@ -13,5 +14,7 @@ public interface UserRepository {
 
     void deleteUser(Long userId);
 
-    User getUserById(Long userId);
+    Optional<User> getUserById(Long userId);
+
+    boolean existEmail(String email);
 }

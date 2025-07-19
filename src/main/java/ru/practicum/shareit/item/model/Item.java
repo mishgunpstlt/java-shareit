@@ -1,6 +1,7 @@
 package ru.practicum.shareit.item.model;
 
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -21,10 +22,10 @@ public class Item {
     @NotNull
     private Long ownerId;
 
-    @NotEmpty
+    @NotBlank
     private String name;
 
-    @NotEmpty
+    @NotBlank
     private String description;
 
     @NotNull

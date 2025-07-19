@@ -2,6 +2,7 @@ package ru.practicum.shareit.item.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.practicum.shareit.exception.IsntOwnerException;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.item.ItemMapper;
 import ru.practicum.shareit.item.dal.ItemRepository;
@@ -12,6 +13,7 @@ import ru.practicum.shareit.user.dal.UserRepository;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -35,17 +37,18 @@ public class ItemServiceImpl implements ItemService {
         if (Objects.equals(item.getOwnerId(), userId)) {
             Item newItem = itemRepository.updateItem(ItemMapper.toUpdatingItem(itemDto), itemId);
             return ItemMapper.toDto(newItem);
+        } else {
+            throw new IsntOwnerException("Только собственник вещи может ее обновить");
         }
-        return null;
     }
 
     @Override
     public ItemDto getItemById(Long itemId) {
-        Item item = itemRepository.getItemById(itemId);
-        if (item == null) {
-            throw new NotFoundException("Вещь не существует");
+        Optional<Item> item = itemRepository.getItemById(itemId);
+        if (item.isEmpty()) {
+            throw new NotFoundException("Вещь c id=" + itemId + " не существует");
         }
-        return ItemMapper.toDto(item);
+        return ItemMapper.toDto(item.get());
     }
 
     @Override
@@ -58,7 +61,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemDto> searchItemsByText(String text) {
-        if (text.isEmpty()) {
+        if (text == null || text.isEmpty()) {
             return List.of();
         }
         return itemRepository.searchItemsByText(text).stream()
@@ -67,8 +70,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     private void existUser(Long userId) {
-        if (userRepository.getUserById(userId) == null) {
-            throw new NotFoundException("Пользователь не существует");
+        if (userRepository.getUserById(userId).isEmpty()) {
+            throw new NotFoundException("Пользователь c id=" + userId + " не существует");
         }
     }
 }

@@ -13,7 +13,6 @@ import ru.practicum.shareit.user.dal.UserRepository;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -44,11 +43,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDto getItemById(Long itemId) {
-        Optional<Item> item = itemRepository.getItemById(itemId);
-        if (item.isEmpty()) {
-            throw new NotFoundException("Вещь c id=" + itemId + " не существует");
-        }
-        return ItemMapper.toDto(item.get());
+        Item item = itemRepository.getItemById(itemId).orElseThrow(() ->
+                new NotFoundException("Вещь c id=" + itemId + " не существует"));
+        return ItemMapper.toDto(item);
     }
 
     @Override

@@ -11,7 +11,6 @@ import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.model.User;
 
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -53,11 +52,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserById(Long userId) {
-        Optional<User> user = userRepository.getUserById(userId);
-        if (user.isEmpty()) {
-            throw new NotFoundException("Пользователь c id=" + userId + " не существует");
-        }
-        return UserMapper.toDto(user.get());
+        User user = userRepository.getUserById(userId).orElseThrow(() ->
+                new NotFoundException("Пользователь c id=" + userId + " не существует"));
+        return UserMapper.toDto(user);
     }
 
     private void existEmail(String email) {

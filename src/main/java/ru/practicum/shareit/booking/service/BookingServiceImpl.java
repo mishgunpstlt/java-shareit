@@ -13,7 +13,6 @@ import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.exception.NotMetConditions;
 import ru.practicum.shareit.item.dto.ItemBookingTimeDto;
 import ru.practicum.shareit.item.dto.ItemMapper;
-import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.service.ItemService;
 import ru.practicum.shareit.user.dto.UserMapper;
 import ru.practicum.shareit.user.service.UserService;
@@ -22,7 +21,6 @@ import java.util.List;
 import java.util.Objects;
 
 import static ru.practicum.shareit.booking.model.BookingStatus.APPROVED;
-import static ru.practicum.shareit.booking.model.BookingStatus.REJECTED;
 
 
 @Service

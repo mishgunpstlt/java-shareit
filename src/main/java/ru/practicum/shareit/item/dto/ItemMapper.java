@@ -2,8 +2,6 @@ package ru.practicum.shareit.item.dto;
 
 import ru.practicum.shareit.item.model.Item;
 
-import java.time.Instant;
-
 public class ItemMapper {
 
     public static Item toEntity(ItemDto itemDto) {

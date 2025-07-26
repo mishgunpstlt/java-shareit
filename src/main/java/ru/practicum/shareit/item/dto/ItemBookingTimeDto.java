@@ -1,39 +1,32 @@
-package ru.practicum.shareit.item.model;
+package ru.practicum.shareit.item.dto;
 
-
-import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import ru.practicum.shareit.request.model.ItemRequest;
 
-/**
- * TODO Sprint add-controllers.
- */
+import java.time.Instant;
+import java.util.List;
 
 @Data
-@AllArgsConstructor
 @RequiredArgsConstructor
-@Entity
-@Table(name = "items")
-public class Item {
+@AllArgsConstructor
+public class ItemBookingTimeDto {
 
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     private Long ownerId;
 
-    @NotBlank
     private String name;
 
-    @NotBlank
     private String description;
 
-    @NotNull
     private Boolean available;
+
+    private Instant nextBooking;
+
+    private Instant lastBooking;
+
+    private List<CommentDto> comments;
 }

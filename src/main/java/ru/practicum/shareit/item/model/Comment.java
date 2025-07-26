@@ -3,37 +3,32 @@ package ru.practicum.shareit.item.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import ru.practicum.shareit.request.model.ItemRequest;
 
-/**
- * TODO Sprint add-controllers.
- */
+import java.time.Instant;
 
 @Data
 @AllArgsConstructor
 @RequiredArgsConstructor
 @Entity
-@Table(name = "items")
-public class Item {
-
+@Table(name = "comments")
+public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    private Long ownerId;
-
     @NotBlank
-    private String name;
+    private String review;
 
-    @NotBlank
-    private String description;
+    @Column(name = "created")
+    private Instant timestamp;
 
-    @NotNull
-    private Boolean available;
+    @JoinColumn(name = "author_id")
+    private Long authorId;
+
+    @JoinColumn(name = "item_id")
+    private Long itemId;
 }

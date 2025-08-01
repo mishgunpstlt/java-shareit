@@ -43,10 +43,10 @@ public class UserServiceImpl implements UserService {
         if (!updatingUser.getEmail().equals(userDto.getEmail())) {
             existEmail(userDto.getEmail());
         }
-        if (userDto.getEmail() != null) {
+        if (userDto.getEmail() != null && !userDto.getEmail().isBlank()) {
             updatingUser.setEmail(userDto.getEmail());
         }
-        if (userDto.getName() != null) {
+        if (userDto.getName() != null && !userDto.getName().isBlank()) {
             updatingUser.setName(userDto.getName());
         }
         userRepository.save(updatingUser);

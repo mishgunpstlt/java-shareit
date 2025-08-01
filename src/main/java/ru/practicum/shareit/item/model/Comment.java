@@ -2,7 +2,6 @@ package ru.practicum.shareit.item.model;
 
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -20,15 +19,14 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     private String review;
 
     @Column(name = "created")
     private Instant timestamp;
 
-    @JoinColumn(name = "author_id")
+    @Column(name = "author_id")
     private Long authorId;
 
-    @JoinColumn(name = "item_id")
+    @Column(name = "item_id")
     private Long itemId;
 }

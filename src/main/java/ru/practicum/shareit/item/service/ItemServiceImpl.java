@@ -85,7 +85,7 @@ public class ItemServiceImpl implements ItemService {
                 .map(ItemMapper::toDto)
                 .map(ItemMapper::toItemBookingDto)
                 .toList();
-        fillLastNextBooking(userId, items);
+        fillLastNextBooking(items);
         fillComments(items);
         return items;
     }
@@ -101,10 +101,9 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void isAvailable(Long itemId) {
-        Item item = getItem(itemId);
+    public void isAvailable(ItemBookingTimeDto item) {
         if (!item.getAvailable()) {
-            throw new NotAvailableException("Вещь с id=" + itemId + " недоступна для бронирования");
+            throw new NotAvailableException("Вещь с id=" + item.getId() + " недоступна для бронирования");
         }
     }
 
@@ -138,16 +137,19 @@ public class ItemServiceImpl implements ItemService {
     }
 
     private void fillComments(List<ItemBookingTimeDto> items) {
-        for (ItemBookingTimeDto item : items) {
-            List<CommentDto> commentsDto = commentRepository.findAllByItemId(item.getId()).stream()
-                    .map(CommentMapper::toDto)
-                    .toList();
+        List<Long> itemIds = items.stream().map(ItemBookingTimeDto::getId).toList();
+        List<CommentDto> commentsDto = commentRepository.findAllByItemIdIn(itemIds).stream()
+                .map(CommentMapper::toDto)
+                .toList();
+        Map<Long, List<CommentDto>> commentsByItemId = commentsDto.stream()
+                .collect(Collectors.groupingBy(CommentDto::getItemId));
 
-            item.setComments(commentsDto);
+        for (ItemBookingTimeDto item : items) {
+            item.setComments(commentsByItemId.getOrDefault(item.getId(), Collections.emptyList()));
         }
     }
 
-    private void fillLastNextBooking(Long userId, List<ItemBookingTimeDto> items) {
+    private void fillLastNextBooking(List<ItemBookingTimeDto> items) {
         List<Long> itemIds = items.stream().map(ItemBookingTimeDto::getId).toList();
         List<Booking> bookings = bookingRepository.findAllByItemIdIn(itemIds);
 

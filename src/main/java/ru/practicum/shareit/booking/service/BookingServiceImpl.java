@@ -14,6 +14,7 @@ import ru.practicum.shareit.exception.NotMetConditions;
 import ru.practicum.shareit.item.dto.ItemBookingTimeDto;
 import ru.practicum.shareit.item.dto.ItemMapper;
 import ru.practicum.shareit.item.service.ItemService;
+import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.dto.UserMapper;
 import ru.practicum.shareit.user.service.UserService;
 
@@ -34,12 +35,12 @@ public class BookingServiceImpl implements BookingService {
     @Override
     @Transactional
     public BookingResponseDto createBooking(BookingDto bookingDto, Long userId) {
-        userService.existUser(userId);
+        UserDto user = userService.getUserById(userId);
         ItemBookingTimeDto itemBookingTimeDto = itemService.getItemById(bookingDto.getItemId());
-        itemService.isAvailable(itemBookingTimeDto.getId());
+        itemService.isAvailable(itemBookingTimeDto);
         correctBookingTime(bookingDto);
         Booking booking = BookingMapper.toNewEntity(bookingDto, userId);
-        booking.setBooker(UserMapper.toEntity(userService.getUserById(userId)));
+        booking.setBooker(UserMapper.toEntity(user));
         booking.setItem(ItemMapper.toEntityFromFillItem(itemBookingTimeDto));
         bookingRepository.save(booking);
         return BookingMapper.toResponseDto(booking);
@@ -66,6 +67,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public BookingResponseDto getBookingById(Long userId, Long bookingId) {
         Booking booking = getBookingById(bookingId);
         userService.existUser(userId);
@@ -77,6 +79,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<BookingResponseDto> getAllBookingByUser(Long userId, String state) {
         userService.existUser(userId);
         return switch (state) {
@@ -103,6 +106,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<BookingResponseDto> getAllBookingByOwner(Long userId, String state) {
         userService.existUser(userId);
         return switch (state) {

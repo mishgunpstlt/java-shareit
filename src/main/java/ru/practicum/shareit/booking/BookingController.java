@@ -31,23 +31,27 @@ public class BookingController {
     @PatchMapping("/{bookingId}")
     public BookingResponseDto approveBooking(@RequestHeader("X-Sharer-User-Id") Long userId,
                                              @PathVariable Long bookingId, @RequestParam @NotNull Boolean approved) {
+        log.info("Подтверждение бронирования с id={} в коллекции bookings", bookingId);
         return bookingService.approveBooking(userId, bookingId, approved);
     }
 
     @GetMapping("/{bookingId}")
     public BookingResponseDto getBookingById(@RequestHeader("X-Sharer-User-Id") Long userId, @PathVariable Long bookingId) {
+        log.info("Получение бронирования из коллекции bookings по id={}", bookingId);
         return bookingService.getBookingById(userId, bookingId);
     }
 
     @GetMapping
     public List<BookingResponseDto> getAllBookingByUser(@RequestHeader("X-Sharer-User-Id") Long userId,
                                                         @RequestParam(defaultValue = "ALL") String state) {
+        log.info("Получение бронирования из коллекции bookings по userId={}", userId);
         return bookingService.getAllBookingByUser(userId, state);
     }
 
     @GetMapping("/owner")
     public List<BookingResponseDto> getAllBookingByOwner(@RequestHeader("X-Sharer-User-Id") Long userId,
                                                          @RequestParam(defaultValue = "ALL") String state) {
+        log.info("Получение бронирования из коллекции bookings по ownerId={}", userId);
         return bookingService.getAllBookingByOwner(userId, state);
     }
 }

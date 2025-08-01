@@ -2,8 +2,6 @@ package ru.practicum.shareit.item.model;
 
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -24,15 +22,12 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    @Column(name = "owner_id")
     private Long ownerId;
 
-    @NotBlank
     private String name;
 
-    @NotBlank
     private String description;
 
-    @NotNull
     private Boolean available;
 }

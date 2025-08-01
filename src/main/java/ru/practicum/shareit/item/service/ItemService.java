@@ -17,7 +17,7 @@ public interface ItemService {
 
     List<ItemDto> searchItemsByText(String text);
 
-    void isAvailable(Long itemId);
+    void isAvailable(ItemBookingTimeDto item);
 
     CommentAuthorNameDto addComment(Long userId, Long itemId, CommentDto commentDto);
 

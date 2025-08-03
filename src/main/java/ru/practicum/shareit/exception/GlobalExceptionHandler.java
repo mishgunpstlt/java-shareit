@@ -25,4 +25,16 @@ public class GlobalExceptionHandler {
     public ErrorResponse handleNoOwnerException(IsntOwnerException e) {
         return new ErrorResponse(e.getMessage());
     }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleNotAvailableException(NotAvailableException e) {
+        return new ErrorResponse(e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleNotMetConditionsException(NotMetConditions e) {
+        return new ErrorResponse(e.getMessage());
+    }
 }

@@ -6,28 +6,27 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
-/**
- * TODO Sprint add-controllers.
- */
+import java.time.Instant;
 
 @Data
 @AllArgsConstructor
 @RequiredArgsConstructor
 @Entity
-@Table(name = "items")
-public class Item {
-
+@Table(name = "comments")
+public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "owner_id")
-    private Long ownerId;
+    private String review;
 
-    private String name;
+    @Column(name = "created")
+    private Instant timestamp;
 
-    private String description;
+    @Column(name = "author_id")
+    private Long authorId;
 
-    private Boolean available;
+    @Column(name = "item_id")
+    private Long itemId;
 }

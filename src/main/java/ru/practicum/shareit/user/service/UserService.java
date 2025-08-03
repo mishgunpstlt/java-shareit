@@ -17,5 +17,5 @@ public interface UserService {
 
     UserDto getUserById(Long userId);
 
-
+    void existUser(Long userId);
 }

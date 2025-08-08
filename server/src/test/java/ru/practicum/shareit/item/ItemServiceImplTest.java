@@ -26,8 +26,7 @@ import ru.practicum.shareit.user.service.UserServiceImpl;
 import java.time.Instant;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -333,7 +332,7 @@ class ItemServiceImplTest {
     void getItem_nonExistingId_shouldThrowNotFoundException() {
         Long nonExistingId = 99999L;
         CommentDto commentDto = new CommentDto(null, "Great!", null, null, null);
-        assertThatThrownBy(() -> itemService.addComment(owner.getId(), nonExistingId, commentDto))
+        assertThatThrownBy(() -> itemService.addComment(owner.getId() ,nonExistingId, commentDto))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessageContaining("Вещь c id=" + nonExistingId + " не существует");
     }

@@ -16,10 +16,8 @@ import ru.practicum.shareit.item.dto.*;
 import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.request.dal.ItemRequestRepository;
-import ru.practicum.shareit.request.service.ItemRequestService;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.service.UserService;
-import ru.practicum.shareit.user.service.UserServiceImpl;
 
 import java.time.Instant;
 import java.time.LocalDateTime;

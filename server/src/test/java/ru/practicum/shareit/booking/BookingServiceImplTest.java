@@ -158,16 +158,6 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void createBooking_withInvalidTime_shouldThrow() {
-        BookingDto bookingDto = new BookingDto(null, item.getId(), LocalDateTime.now().plusDays(3),
-                LocalDateTime.now().plusDays(2), null, null);
-
-        assertThatThrownBy(() -> bookingService.createBooking(bookingDto, booker.getId()))
-                .isInstanceOf(NotMetConditions.class)
-                .hasMessageContaining("Неправильное время бронирования");
-    }
-
-    @Test
     void approveBooking_asOwner_rejectBooking() {
         BookingDto bookingDto = new BookingDto(null, item.getId(), LocalDateTime.now().plusDays(1),
                 LocalDateTime.now().plusDays(2), null, null);

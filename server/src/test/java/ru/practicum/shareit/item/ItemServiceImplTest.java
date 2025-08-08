@@ -151,9 +151,6 @@ class ItemServiceImplTest {
 
         result = itemService.searchItemsByText("pow");
         assertThat(result).hasSize(1);
-
-        result = itemService.searchItemsByText("");
-        assertThat(result).isEmpty();
     }
 
     @Test

@@ -96,4 +96,14 @@ public class BookItemRequestDtoTest {
 
         assertThat(violations).isEmpty();
     }
+
+    @Test
+    void whenInvalidTime_thenValidationFails() {
+        BookItemRequestDto bookingDto = new BookItemRequestDto(1L, 10L, LocalDateTime.now().plusDays(3),
+                LocalDateTime.now().plusDays(2), null);
+
+        Set<ConstraintViolation<BookItemRequestDto>> violations = validator.validate(bookingDto);
+
+        assertThat(violations).anyMatch(v -> v.getMessage().equals("Время начала должно быть раньше времени окончания"));
+    }
 }

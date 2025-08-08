@@ -38,7 +38,6 @@ public class BookingServiceImpl implements BookingService {
         UserDto user = userService.getUserById(userId);
         ItemBookingTimeDto itemBookingTimeDto = itemService.getItemById(bookingDto.getItemId());
         itemService.isAvailable(itemBookingTimeDto);
-        correctBookingTime(bookingDto);
         Booking booking = BookingMapper.toNewEntity(bookingDto, userId);
         booking.setBooker(UserMapper.toEntity(user));
         booking.setItem(ItemMapper.toEntityFromFillItem(itemBookingTimeDto));
@@ -130,12 +129,6 @@ public class BookingServiceImpl implements BookingService {
                     .toList();
             default -> throw new NotMetConditions("Неправильный параметр запроса (state)");
         };
-    }
-
-    private void correctBookingTime(BookingDto bookingDto) {
-        if (bookingDto.getStart().isAfter(bookingDto.getEnd())) {
-            throw new NotMetConditions("Неправильное время бронирования");
-        }
     }
 
     private Booking getBookingById(Long bookingId) {

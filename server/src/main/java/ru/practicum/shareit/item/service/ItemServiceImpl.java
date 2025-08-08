@@ -15,7 +15,10 @@ import ru.practicum.shareit.item.dal.ItemRepository;
 import ru.practicum.shareit.item.dto.*;
 import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.request.dal.ItemRequestRepository;
+import ru.practicum.shareit.request.service.ItemRequestService;
 import ru.practicum.shareit.user.dto.UserDto;
+import ru.practicum.shareit.user.service.UserService;
 import ru.practicum.shareit.user.service.UserServiceImpl;
 
 import java.time.Instant;
@@ -30,14 +33,19 @@ import java.util.stream.Collectors;
 public class ItemServiceImpl implements ItemService {
 
     private final ItemRepository itemRepository;
-    private final UserServiceImpl userService;
+    private final UserService userService;
     private final BookingRepository bookingRepository;
     private final CommentRepository commentRepository;
+    private final ItemRequestRepository itemRequestRepository;
 
     @Override
     @Transactional
     public ItemDto addItem(ItemDto itemDto, Long userId) {
         userService.existUser(userId);
+        if (itemDto.getRequestId() != null) {
+            itemRequestRepository.findById(itemDto.getRequestId()).orElseThrow(()
+                    -> new NotFoundException("Запрос с id=" + itemDto.getRequestId() + " не найден"));;
+        }
         Item item = ItemMapper.toEntity(itemDto);
         item.setOwnerId(userId);
         itemRepository.save(item);
@@ -92,9 +100,6 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemDto> searchItemsByText(String text) {
-        if (text == null || text.isEmpty()) {
-            return List.of();
-        }
         return itemRepository.searchByText(text).stream()
                 .map(ItemMapper::toDto)
                 .toList();

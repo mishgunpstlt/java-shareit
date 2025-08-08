@@ -2,6 +2,7 @@ package ru.practicum.shareit.item;
 
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -49,7 +50,7 @@ public class ItemController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Object> searchItemsByText(@RequestParam String text) {
+    public ResponseEntity<Object> searchItemsByText(@RequestParam @NotBlank String text) {
         log.info("Поиск вещей из коллекции items по описанию: {}", text);
         return itemClient.searchItemsByText(text);
     }
